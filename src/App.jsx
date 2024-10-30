@@ -6,7 +6,7 @@ import { Airdrop } from './Components/Airdrop/airdrop';
 import { Balance } from './Components/Balance/balance';
 function App() {
   return (
-    <ConnectionProvider endpoint={'https://solana-devnet.g.alchemy.com/v2/BuAusa8cn5LabGRX-bQdIRyQWj5COuuN'}>
+    <ConnectionProvider endpoint={''}>
       <WalletProvider wallets={[]} autoConnect>
         <WalletModalProvider>
           <div className="flex gap-4 justify-center items-center p-12">
