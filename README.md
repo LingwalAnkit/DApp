@@ -18,11 +18,9 @@ Before you begin, ensure you have the following installed:
 
 ## Installation
 
-1. Clone the repository:
-```bash
-git clone [your-repository-url]
-cd [repository-name]
-```
+1. git clone https://github.com/LingwalAnkit
+/solana-wallet-dapp.git
+cd DApp
 
 2. Install dependencies:
 ```bash
