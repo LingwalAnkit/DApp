@@ -4,9 +4,10 @@ import { WalletModalProvider, WalletMultiButton, WalletDisconnectButton } from '
 import '@solana/wallet-adapter-react-ui/styles.css';
 import { Airdrop } from './Components/Airdrop/airdrop';
 import { Balance } from './Components/Balance/balance';
+import { SignMessage } from './Components/Sign/sign';
 function App() {
   return (
-    <ConnectionProvider endpoint={''}>
+    <ConnectionProvider endpoint={'https://api.devnet.solana.com'}>
       <WalletProvider wallets={[]} autoConnect>
         <WalletModalProvider>
           <div className="flex gap-4 justify-center items-center p-12">
@@ -15,6 +16,7 @@ function App() {
           </div>
           <Airdrop />
           <Balance />
+          <SignMessage />
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
