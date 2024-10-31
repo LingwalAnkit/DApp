@@ -5,7 +5,7 @@ export function TokenBalance() {
     const wallet = useWallet();
     const { connection } = useConnection();
     // Define your token mint address
-    const TokenMintAddress = new PublicKey("9D6iW86V7e4kaRvdJbuLRTQhERc1p7PaExkaJ6HpnGPR");
+    const TokenMintAddress = new PublicKey("Your Token Mint Address");
 
     async function fetchTokenBalance() {
         if (wallet.publicKey) {
