@@ -20,7 +20,7 @@ Before you begin, ensure you have the following installed:
 
 1. git clone https://github.com/LingwalAnkit
 /solana-wallet-dapp.git
-cd DApp
+- cd DApp
 
 2. Install dependencies:
 ```bash
