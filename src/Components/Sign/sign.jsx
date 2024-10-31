@@ -24,9 +24,9 @@ export function SignMessage(){
     }
 
     return (
-        <div>
-            <input type="text" id="message" placeholder="Enter a message" />
-            <button onClick={onClick}>Sign Message</button>
+        <div className='flex flex-row gap-4 items-center justify-center mt-4'>
+            <input type="text" id="message" placeholder="Enter a message" className='p-2 rounded-md border-2 border-gray-300' />
+            <button onClick={onClick} className='px-4 py-2 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors text-white'>Sign Message</button>
         </div>
     )
 }
