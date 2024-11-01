@@ -5,7 +5,7 @@ export function TokenBalance() {
     const wallet = useWallet();
     const { connection } = useConnection();
     // Define your token mint address
-    const TokenMintAddress = new PublicKey("Your Token Mint Address");
+    const TokenMintAddress = new PublicKey(import.meta.env.VITE_TOKEN_MINT_ADDRESS);
 
     async function fetchTokenBalance() {
         if (wallet.publicKey) {
