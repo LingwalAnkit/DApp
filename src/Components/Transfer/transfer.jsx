@@ -21,7 +21,7 @@ export function Transfer() {
                 toPublicKey = new PublicKey(to);
             } catch (error) {
                 alert('Invalid recipient address');
-                return;
+                return error;
             }
 
             // Validate amount

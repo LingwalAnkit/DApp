@@ -7,6 +7,7 @@ import { Balance } from './Components/Balance/balance';
 import { SignMessage } from './Components/Sign/sign';
 import { Transfer } from './Components/Transfer/transfer';
 import { TokenBalance } from './Components/TokenBalance/tokenBalance';
+import { TransferToken } from './Components/TransferToken/transferToken';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           </div>
           <SignMessage />
           <Transfer />
+          <TransferToken />
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
