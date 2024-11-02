@@ -15,7 +15,7 @@ Before you begin, ensure you have the following installed:
 - A Solana wallet (e.g., Phantom, Solflare)
 
 ## Installation
-1. git clone https://github.com/LingwalAnkit/solana-wallet-dapp.git
+1. git clone https://github.com/LingwalAnkit/DApp
 - cd DApp
 2. Install dependencies:
 ```bash
