@@ -33,7 +33,7 @@ export function TokenBalance() {
     };
 
     fetchTokenBalance();
-  }, [publicKey, connection, tokenMintAddress]); // Added missing dependencies
+  },); // Added missing dependencies
 
   return (
     <div className="w-full max-w-md mx-auto mb-6 bg-gray-800 rounded-lg shadow-lg p-6">
