@@ -1,24 +1,25 @@
-/* Applying the gradient background resembling Phantom Wallet colors */
 body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(45deg, #6a1b9a, #8e24aa, #42a5f5, #00bcd4);
-    background-size: 400% 400%;
-    animation: gradientFlow 5s ease infinite;
-  }
-  
-  /* Creating the animation to move the gradient */
-  @keyframes gradientFlow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(45deg, 
+      #6a1b9a, /* Deep Purple */
+      #8e24aa, /* Phantom Purple */
+      #42a5f5, /* Light Blue */
+      #00bcd4, /* Teal */
+      #4919b1, /* Dark Phantom Blue */
+      #6200ea, /* Intense Purple */
+      #7c4dff, /* Violet */
+      #18ffff  /* Neon Cyan */
+  );
+  background-size: 400% 400%;
+  animation: oilSpill 50s ease-in-out infinite;
+  filter: contrast(1.2) brightness(1.1);
+}
+
+@keyframes oilSpill {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
