@@ -1,0 +1,24 @@
+/* Applying the gradient background resembling Phantom Wallet colors */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(45deg, #6a1b9a, #8e24aa, #42a5f5, #00bcd4);
+    background-size: 400% 400%;
+    animation: gradientFlow 5s ease infinite;
+  }
+  
+  /* Creating the animation to move the gradient */
+  @keyframes gradientFlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
