@@ -1,56 +1,65 @@
 import { useState } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { useConnection } from "@solana/wallet-adapter-react";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 export const Airdrop = () => {
     const { publicKey } = useWallet();
     const { connection } = useConnection();
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     const requestAirdrop = async () => {
-        if (!publicKey) {
-            alert("Wallet not connected!");
-            return;
-        }
-
-        const solAmount = parseFloat(amount);
-        if (isNaN(solAmount) || solAmount <= 0) {
-            alert("Please enter a valid amount.");
-            return;
-        }
-
+        setError("");
+        setSuccess("");
+        
         try {
+            if (!publicKey) throw new Error("❌ Wallet not connected!");
+
+            const solAmount = parseFloat(amount);
+            if (isNaN(solAmount) || solAmount <= 0) {
+                throw new Error("⚠️ Please enter a valid SOL amount!");
+            }
+
             setLoading(true);
             const signature = await connection.requestAirdrop(publicKey, solAmount * 1e9);
             await connection.confirmTransaction(signature, "confirmed");
-            alert(`✅ Airdropped ${solAmount} SOL to ${publicKey.toBase58()}`);
-        } catch (error) {
-            console.error("Airdrop failed:", error);
-            alert("❌ Airdrop failed. Please try again.");
+            
+            setSuccess(`✅ Airdropped ${solAmount} SOL to ${publicKey.toBase58()}`);
+            setAmount(""); // Clear input after success
+        } catch (err) {
+            setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-center p-6 bg-gray-900 rounded-xl shadow-lg max-w-sm mx-auto">
-            <h2 className="text-lg font-semibold text-white">Solana Airdrop</h2>
-            <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter SOL amount"
-                className="w-full px-4 py-2 border border-gray-600 rounded-lg text-white bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-                onClick={requestAirdrop}
-                className={`w-full px-6 py-2 text-white rounded-lg transition-colors 
-                    ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-                disabled={loading}
-            >
-                {loading ? "Requesting..." : "Request Airdrop"}
-            </button>
+        <div className="w-full max-w-md mx-auto mb-6 bg-gray-800 rounded-lg shadow-lg p-6 mt-40">
+            <h2 className="text-xl font-semibold text-white text-center mb-4">Request Airdrop</h2>
+            <div className="space-y-4">
+                <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Enter SOL amount"
+                    disabled={loading}
+                    className="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500"
+                />
+                <button
+                    onClick={requestAirdrop}
+                    disabled={loading}
+                    className={`w-full p-3 text-white font-semibold rounded-md transition-colors ${
+                        loading 
+                        ? "bg-gray-600 cursor-not-allowed" 
+                        : "bg-purple-600 hover:bg-purple-700"
+                    }`}
+                >
+                    {loading ? "Requesting..." : "Request Airdrop"}
+                </button>
+                {error && <p className="text-red-400 text-center mt-3">{error}</p>}
+                {success && <p className="text-green-400 text-center mt-3 break-words">{success}</p>}
+            </div>
         </div>
     );
 };

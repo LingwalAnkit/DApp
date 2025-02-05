@@ -12,19 +12,17 @@ export function TokenBalance() {
 
   useEffect(() => {
     const fetchTokenBalance = async () => {
-      if (!publicKey) return; // Ensure wallet is connected
+      if (!publicKey) return;
 
       try {
-        // Get all token accounts owned by the wallet for this mint
         const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
           mint: tokenMintAddress,
         });
 
         if (tokenAccounts.value.length > 0) {
-          // Get balance from the first token account found
           const tokenAccountPubkey = tokenAccounts.value[0].pubkey;
           const token = await connection.getTokenAccountBalance(tokenAccountPubkey);
-          setTokenBalance(token.value.uiAmount); // Store balance in state
+          setTokenBalance(token.value.uiAmount);
         } else {
           setTokenBalance(0);
         }
@@ -35,12 +33,12 @@ export function TokenBalance() {
     };
 
     fetchTokenBalance();
-  }, ); // Runs when wallet connects or changes
+  }, [publicKey, connection, tokenMintAddress]); // Added missing dependencies
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-gray-800 rounded-lg shadow-lg max-w-sm mx-auto">
-      <h2 className="text-xl font-semibold text-white">Token Balance</h2>
-      <p className="text-lg font-medium text-gray-300 mt-2">
+    <div className="w-full max-w-md mx-auto mb-6 bg-gray-800 rounded-lg shadow-lg p-6">
+      <h2 className="text-xl font-semibold text-white text-center mb-4">Token Balance</h2>
+      <p className="text-2xl font-bold text-white text-center">
         {tokenBalance !== null ? `${tokenBalance} Tokens` : "Connect Wallet"}
       </p>
     </div>

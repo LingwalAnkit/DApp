@@ -1,85 +1,70 @@
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey, SystemProgram, LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
-import { useState } from 'react';
+import { useState } from "react";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
 
-export function Transfer() {
+export const Transfer = () => {
     const { publicKey, sendTransaction } = useWallet();
     const { connection } = useConnection();
-    const [to, setTo] = useState('');
-    const [amount, setAmount] = useState('');
+    const [recipient, setRecipient] = useState("");
+    const [amount, setAmount] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-    async function transfer() {
+    const handleTransfer = async () => {
+        setError("");
+        setSuccess("");
+
         try {
-            if (!publicKey) {
-                alert('Please connect your wallet first!');
-                return;
-            }
+            if (!publicKey) throw new Error("❌ Wallet not connected!");
+            if (!recipient) throw new Error("⚠️ Please enter recipient address!");
+            if (!amount || isNaN(amount)) throw new Error("⚠️ Please enter a valid amount!");
 
-            // Validate recipient address
-            let toPublicKey;
-            try {
-                toPublicKey = new PublicKey(to);
-            } catch (error) {
-                alert('Invalid recipient address');
-                return error;
-            }
-
-            // Validate amount
-            const parsedAmount = parseFloat(amount);
-            if (isNaN(parsedAmount) || parsedAmount <= 0) {
-                alert('Please enter a valid amount');
-                return;
-            }
-
-            const transaction = new Transaction();
-            transaction.add(
+            const recipientPubKey = new PublicKey(recipient);
+            const transaction = new Transaction().add(
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
-                    toPubkey: toPublicKey, // Fixed property name
-                    lamports: parsedAmount * LAMPORTS_PER_SOL
+                    toPubkey: recipientPubKey,
+                    lamports: amount * LAMPORTS_PER_SOL
                 })
             );
 
             const signature = await sendTransaction(transaction, connection);
-            await connection.confirmTransaction(signature, 'confirmed');
-            
-            alert(`${amount} SOL sent to ${to}\nTransaction signature: ${signature}`);
-            
-            // Clear form
-            setTo('');
-            setAmount('');
-            
-        } catch (error) {
-            console.error('Error:', error);
-            alert(`Transaction failed: ${error.message}`);
+            await connection.confirmTransaction(signature);
+            setSuccess(`✅ Transfer successful! Signature: ${signature}`);
+            setAmount("");
+            setRecipient("");
+        } catch (err) {
+            setError(err.message);
         }
-    }
+    };
 
     return (
-        <div className='flex flex-row gap-8 items-center justify-center mt-4'>
-            <input
-                type="text"
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-                placeholder="Recipient Address"
-                className='p-2 rounded-md border-2 border-gray-300'
-            />
-            <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Amount"
-                className='w-24 p-2 rounded-md border-2 border-gray-300 text-center'
-                min="0"
-                step="any"
-            />
-            <button
-                onClick={transfer}
-                disabled={!publicKey}
-                className='px-4 py-2 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors text-white disabled:bg-gray-400 disabled:cursor-not-allowed'
-            >
-                Transfer
-            </button>
+        <div className="w-full max-w-md mx-auto mb-6 bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-white text-center mb-4">Transfer SOL</h2>
+            <div className="space-y-4">
+                <input
+                    type="text"
+                    value={recipient}
+                    onChange={(e) => setRecipient(e.target.value)}
+                    placeholder="Recipient Address"
+                    className="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500"
+                />
+                <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Amount in SOL"
+                    className="w-full p-3 rounded-md bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:border-purple-500"
+                />
+                <button
+                    onClick={handleTransfer}
+                    className="w-full p-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md transition-colors"
+                >
+                    Send SOL
+                </button>
+                {error && <p className="text-red-400 text-center mt-3">{error}</p>}
+                {success && <p className="text-green-400 text-center mt-3 break-words">{success}</p>}
+            </div>
         </div>
     );
-}
+};
